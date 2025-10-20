@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generated Question Paper</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            margin: 30px;
+            background-color: #f9fafc;
+        }
+        .paper {
+            border: 2px solid #333;
+            padding: 40px;
+            margin: 20px auto;
+            background-color: #fff;
+            max-width: 900px;
+        }
+        .header {
+            font-size: 18px;
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .sub-title {
+            text-align: center;
+            font-size: 17px;
+            font-weight: bold; 
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        .question {
+            margin: 15px 0;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+        .options {
+            margin-left: 25px;
+            margin-top: 8px; 
+            font-weight: normal;
+        }
+        .options div {
+            margin-bottom: 2px;
+        }
+        .download-links {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+        }
+        .download-links a {
+            margin: 0 15px;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .download-links a.pdf {
+            background-color: #d9534f;
+            color: white;
+        }
+        .download-links a.text {
+            background-color: #5bc0de;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="paper">
+        <div class="header">
+        <strong>Exam:</strong> {{ exam }}<br>
+        <strong>Course Code:</strong> {{ course_code }}<br>
+        <strong>Course Name:</strong> {{ course_name }}<br>
+        <strong>Date:</strong> {{ date }}<br>
+        <strong>Time:</strong> {{ time }}<br>
+        <strong>Total Marks:</strong> {{ total_marks }}
+        </div>
+
+        <div class="section-title">Section A</div>
+        <div class="sub-title">Multiple Choice Questions (MCQs)</div>
+        {% if mcqs %}
+            {% for mcq in mcqs %}
+                <div class="question">
+                    {{ loop.index }}. {{ mcq.question }}
+                    <div class="options">
+                        <div>A) {{ mcq.options.A }}</div>
+                        <div>B) {{ mcq.options.B }}</div>
+                        <div>C) {{ mcq.options.C }}</div>
+                        <div>D) {{ mcq.options.D }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div>No MCQs generated.</div>
+        {% endif %}
+
+        <div class="section-title">Section B</div>
+        <div class="sub-title">Short Answer Questions - 2 Marks</div>
+        {% if short_answers %}
+            {% for sa in short_answers %}
+                <div class="question">{{ loop.index }}. {{ sa }}</div>
+            {% endfor %}
+        {% else %}
+            <div>No short answer questions generated.</div>
+        {% endif %}
+
+        <div class="section-title">Section C</div>
+        <div class="sub-title">Long Answer Questions</div>
+        {% if long_answers %}
+            {% for la in long_answers %}
+                <div class="question">{{ loop.index }}. {{ la }}</div>
+            {% endfor %}
+        {% else %}
+            <div>No long answer questions generated.</div>
+        {% endif %}
+
+        <div class="download-links">
+            <a href="{{ url_for('download_file', filename=pdf_filename) }}" class="pdf">Download as PDF</a>
+            <a href="{{ url_for('download_file', filename=txt_filename) }}" class="text">Download as Text</a>
+        </div>
+    </div>
+</body>
+</html>
