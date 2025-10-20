@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question Paper Generator</title>
+    <br>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            background: #fff;
+            margin: 40px auto;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #2b2b2b;
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: normal;
+        }
+
+        textarea {
+            height: 120px;
+        }
+
+        .section {
+            margin-top: 25px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+
+        button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+            margin: 25px auto 0;
+        }
+
+        button:hover {
+            background: #0052a3;
+        }
+
+        .small-input {
+            width: 100px;
+            display: inline-block;
+        }
+
+        .note {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 8px;
+        }
+    </style>
+
+    <script>
+        function updateSectionCFields() {
+            const total = document.getElementById("section_c_total").value;
+            const selectDiv = document.getElementById("selectSectionC");
+            if (total && total > 0) {
+                selectDiv.innerHTML = `
+                    <label>How many need to answer out of ${total}?</label>
+                    <input type="number" name="section_c_to_answer" min="1" max="${total}" class="small-input" required>
+                `;
+            } else {
+                selectDiv.innerHTML = "";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1><Q>Question Paper Generator</Q></h1>
+        <h1>Exam Paper Details</h1>
+        <br>
+        <form method="POST" action="/generate" enctype="multipart/form-data">
+
+            <b><label>Exam:</label></b>
+<input type="text" name="exam" placeholder="e.g. CIAT II" required>
+
+        <b><label>Date (DD-MM-YYYY):</label></b>
+        <input type="text" name="date" placeholder="e.g., 20-10-2025" pattern="\d{2}-\d{2}-\d{4}" title="Date must be in DD-MM-YYYY format" required>
+
+        <b><label>Time (Duration):</label></b>
+        <input type="text" name="time" placeholder="e.g., 2 Hours, 90 Minutes" required>
+
+        <b><label>Course Code:</label></b>
+        <input type="text" name="course_code" placeholder="e.g. U21G..." required>
+
+        <b><label>Course Name:</label></b>
+        <input type="text" name="course_name" placeholder="e.g. DBMS" required>
+
+        <b><label>Total Marks:</label></b>
+        <input type="number" name="total_marks" required>
+
+            <h1>✍️ Section Configuration</h1>
+
+            <div class="section">
+                <center><h2>Section A</h2></center>
+                <p style="text-align:center; font-style: italic;">Multiple Choice Questions (MCQs)</p>
+                <b><label>Total Number of MCQs?</label></b>
+                <br>
+                <input type="number" name="section_a_count" required>
+            </div>
+
+            <div class="section">
+                <center><h2>Section B</h2></center>
+                <p style="text-align:center; font-style: italic;">Short Answer Questions - 2 Marks</p>
+                <b><label>Total Number of 2 Marks?</label></b>
+                <br>
+                <input type="number" name="section_b_count" required>
+            </div>
+
+            <div class="section">
+                <center><h2>Section C</h2></center>
+                <p style="text-align:center; font-style: italic;">Long Answer Questions</p>
+                <b><label>Total Number of Long Answers?</label></b>
+                <br>
+                <input type="number" id="section_c_total" name="section_c_count" oninput="updateSectionCFields()" required>
+                <div id="selectSectionC"></div>
+            </div>
+
+            <h1>📚 Input Study Material</h1>
+            <div class="section">
+                <b><h2>Upload Study Material</h2></b>
+                <p class="note">Upload your study material file (.pdf, .docx, or .txt)</p>
+                <br>
+                <input type="file" name="file" accept=".pdf,.docx,.txt">
+                <p class="note">OR paste your text manually below:</p>
+                <br>
+                <textarea name="input_text" placeholder="Paste your content here..."></textarea>
+            </div>
+
+            <button type="submit">Generate Question Paper</button>
+        </form>
+    </div>
+</body>
+</html>
